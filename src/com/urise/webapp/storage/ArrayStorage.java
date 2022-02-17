@@ -21,7 +21,7 @@ public class ArrayStorage {
         int indexResume = findIndex(uuid);
         if (indexResume != -1) {
             System.out.println("Такое резюме " + uuid + " уже есть!");
-        } else if (storage.length == size) {
+        } else if (size == storage.length) {
             System.out.println("В базе данных резюме закончилось место!!");
         } else {
             storage[size] = r;
