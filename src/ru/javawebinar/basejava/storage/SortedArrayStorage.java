@@ -7,15 +7,15 @@ import java.util.Arrays;
 public class SortedArrayStorage extends AbstractArrayStorage {
 
     protected void saveResume(Resume r, int indexResume) {
-        int j = -indexResume - 1;
-        System.arraycopy(storage, j, storage, j + 1, size - j);
-        storage[j] = r;
+        int freeIndex = -indexResume - 1;
+        System.arraycopy(storage, freeIndex, storage, freeIndex + 1, size - freeIndex);
+        storage[freeIndex] = r;
     }
 
     protected void shiftArray(int indexResume) {
-        int quantityElements = size - indexResume - 1;
-        if (quantityElements > 0) {
-            System.arraycopy(storage, indexResume + 1, storage, indexResume, quantityElements);
+        int quantityResume = size - indexResume - 1;
+        if (quantityResume > 0) {
+            System.arraycopy(storage, indexResume + 1, storage, indexResume, quantityResume);
         }
     }
 
