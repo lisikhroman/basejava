@@ -1,5 +1,8 @@
 package ru.javawebinar.basejava.storage;
 
+import ru.javawebinar.basejava.exception.ExistStorageException;
+import ru.javawebinar.basejava.exception.NotExistStorageException;
+import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.Arrays;
@@ -25,13 +28,12 @@ public abstract class AbstractArrayStorage implements Storage {
         String uuid = r.getUuid();
         int indexResume = findIndex(uuid);
         if (indexResume >= 0) {
-            System.out.println("Такое резюме " + uuid + " уже есть!");
+            throw new ExistStorageException(uuid);
         } else if (size == storage.length) {
-            System.out.println("В базе данных резюме закончилось место!!");
+            throw new StorageException("В базе данных резюме закончилось место!!", uuid);
         } else {
             saveResume(r, indexResume);
             size++;
-            System.out.println("Резюме " + uuid + " сохранено!");
         }
     }
 
@@ -44,7 +46,7 @@ public abstract class AbstractArrayStorage implements Storage {
             storage[indexResume] = r;
             System.out.println("Резюме " + uuid + " обновлено!");
         } else {
-            System.out.println("Резюме " + uuid + " отсутствует!");
+            throw new NotExistStorageException(uuid);
         }
     }
 
@@ -53,8 +55,7 @@ public abstract class AbstractArrayStorage implements Storage {
         if (indexResume >= 0) {
             return storage[indexResume];
         }
-        System.out.println("Резюме " + uuid + " отсутствует!");
-        return null;
+        throw new NotExistStorageException(uuid);
     }
 
     public void delete(String uuid) {
@@ -64,7 +65,7 @@ public abstract class AbstractArrayStorage implements Storage {
             storage[size - 1] = null;
             size--;
         } else {
-            System.out.println("Резюме " + uuid + " отсутствует!");
+            throw new NotExistStorageException(uuid);
         }
     }
 
