@@ -29,12 +29,12 @@ public abstract class AbstractArrayStorage implements Storage {
         int indexResume = findIndex(uuid);
         if (indexResume >= 0) {
             throw new ExistStorageException(uuid);
-        } else if (size == storage.length) {
-            throw new StorageException("В базе данных резюме закончилось место!!", uuid);
-        } else {
-            saveResume(r, indexResume);
-            size++;
         }
+        if (size == storage.length) {
+            throw new StorageException("В базе данных резюме закончилось место!!", uuid);
+        }
+        saveResume(r, indexResume);
+        size++;
     }
 
     protected abstract void saveResume(Resume r, int indexResume);
@@ -42,31 +42,31 @@ public abstract class AbstractArrayStorage implements Storage {
     public void update(Resume r) {
         String uuid = r.getUuid();
         int indexResume = findIndex(uuid);
-        if (indexResume >= 0) {
-            storage[indexResume] = r;
-            System.out.println("Резюме " + uuid + " обновлено!");
-        } else {
+        if (indexResume < 0) {
             throw new NotExistStorageException(uuid);
+
         }
+        storage[indexResume] = r;
+        System.out.println("Резюме " + uuid + " обновлено!");
     }
 
     public Resume get(String uuid) {
         int indexResume = findIndex(uuid);
-        if (indexResume >= 0) {
-            return storage[indexResume];
+        if (indexResume < 0) {
+            throw new NotExistStorageException(uuid);
+
         }
-        throw new NotExistStorageException(uuid);
+        return storage[indexResume];
     }
 
     public void delete(String uuid) {
         int indexResume = findIndex(uuid);
-        if (indexResume >= 0) {
-            shiftArray(indexResume);
-            storage[size - 1] = null;
-            size--;
-        } else {
+        if (indexResume < 0) {
             throw new NotExistStorageException(uuid);
         }
+        shiftArray(indexResume);
+        storage[size - 1] = null;
+        size--;
     }
 
     protected abstract void shiftArray(int indexResume);

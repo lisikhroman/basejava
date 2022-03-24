@@ -1,12 +1,13 @@
 package ru.javawebinar.basejava.storage;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
+
+import static org.junit.Assert.*;
 
 public abstract class AbstractArrayStorageTest {
     private static final String UUID_1 = "uuid1";
@@ -30,27 +31,27 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void size() {
-        Assert.assertEquals(4, storage.size());
+        assertEquals(4, storage.size());
     }
 
     @Test
     public void clear() {
         storage.clear();
-        Assert.assertEquals(0, storage.size());
+        assertEquals(0, storage.size());
     }
 
     @Test
     public void save() {
-        String UUID_5 = "uuid5";
-        Resume resume = new Resume(UUID_5);
+        String uuid5 = "uuid5";
+        Resume resume = new Resume(uuid5);
         storage.save(resume);
-        Assert.assertEquals(resume, storage.get(UUID_5));
+        assertEquals(resume, storage.get(uuid5));
+        assertEquals(5, storage.size());
     }
 
     @Test(expected = ExistStorageException.class)
     public void saveExist() {
-        Resume resume = new Resume(UUID_4);
-        storage.save(resume);
+        storage.save(new Resume(UUID_4));
     }
 
     @Test(expected = StorageException.class)
@@ -60,7 +61,7 @@ public abstract class AbstractArrayStorageTest {
                 storage.save(new Resume());
             }
         } catch (StorageException e) {
-            Assert.fail("Переполнение произошло раньше времени!");
+            fail("Переполнение произошло раньше времени!");
         }
         storage.save(new Resume());
     }
@@ -69,26 +70,17 @@ public abstract class AbstractArrayStorageTest {
     public void update() {
         Resume resume = new Resume(UUID_1);
         storage.update(resume);
-        Assert.assertEquals(resume, storage.get(UUID_1));
+        assertEquals(resume, storage.get(UUID_1));
     }
 
     @Test(expected = NotExistStorageException.class)
     public void updateNotExist() {
-        String UUID_6 = "uuid6";
-        Resume resume = new Resume(UUID_6);
-        storage.update(resume);
+        storage.update(new Resume("uuid6"));
     }
 
     @Test
     public void get() {
-        Resume resume1 = new Resume(UUID_1);
-        Resume resume2 = new Resume(UUID_2);
-        Resume resume3 = new Resume(UUID_3);
-        Resume resume4 = new Resume(UUID_4);
-        Assert.assertEquals(resume1, storage.get(UUID_1));
-        Assert.assertEquals(resume2, storage.get(UUID_2));
-        Assert.assertEquals(resume3, storage.get(UUID_3));
-        Assert.assertEquals(resume4, storage.get(UUID_4));
+        assertEquals(new Resume(UUID_1), storage.get(UUID_1));
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -96,9 +88,11 @@ public abstract class AbstractArrayStorageTest {
         storage.get("dummy");
     }
 
-    @Test
+    @Test(expected = NotExistStorageException.class)
     public void delete() {
         storage.delete(UUID_3);
+        assertEquals(3, storage.size());
+        storage.get(UUID_3);
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -109,14 +103,8 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void getAll() {
-        Resume resume1 = new Resume(UUID_1);
-        Resume resume2 = new Resume(UUID_2);
-        Resume resume3 = new Resume(UUID_3);
-        Resume resume4 = new Resume(UUID_4);
-        Resume[] resume = storage.getAll();
-        Assert.assertEquals(resume1, resume[0]);
-        Assert.assertEquals(resume2, resume[1]);
-        Assert.assertEquals(resume3, resume[2]);
-        Assert.assertEquals(resume4, resume[3]);
+        Resume[] expectedResumeArray = new Resume[]{new Resume(UUID_1), new Resume(UUID_2), new Resume(UUID_3), new Resume(UUID_4)};
+        Resume[] actualResumeArray = storage.getAll();
+        assertArrayEquals(expectedResumeArray, actualResumeArray);
     }
 }
