@@ -44,7 +44,6 @@ public abstract class AbstractArrayStorage implements Storage {
         int indexResume = findIndex(uuid);
         if (indexResume < 0) {
             throw new NotExistStorageException(uuid);
-
         }
         storage[indexResume] = r;
         System.out.println("Резюме " + uuid + " обновлено!");
