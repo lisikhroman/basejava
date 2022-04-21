@@ -9,6 +9,9 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public abstract class AbstractArrayStorage extends AbstractStorage {
+    protected static final int STORAGE_LIMIT = 10000;
+    protected Resume[] storage = new Resume[STORAGE_LIMIT];
+    protected int size;
 
     public int size() {
         return size;
@@ -20,7 +23,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public void saveResume(Resume r, int indexResume) {
+    public void saveResume(Resume r, int indexResume, String uuid) {
         if (size == storage.length) {
             throw new StorageException("В базе данных резюме закончилось место!!", r.getUuid());
         }
@@ -31,18 +34,18 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected abstract void saveResumeInArray(Resume r, int indexResume);
 
     @Override
-    public void updateResume(Resume r, int indexResume) {
+    public void updateResume(Resume r, int indexResume, String uuid) {
         storage[indexResume] = r;
         System.out.println("Резюме " + r.getUuid() + " обновлено!");
     }
 
     @Override
-    protected Resume getResume(int indexResume) {
+    protected Resume getResume(int indexResume, String uuid) {
         return storage[indexResume];
     }
 
     @Override
-    protected void deleteResume(int indexResume) {
+    protected void deleteResume(int indexResume, String uuid) {
         shiftArray(indexResume);
         storage[size - 1] = null;
         size--;

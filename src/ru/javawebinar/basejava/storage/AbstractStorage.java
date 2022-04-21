@@ -5,51 +5,47 @@ import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 public abstract class AbstractStorage implements Storage {
-    protected static final int STORAGE_LIMIT = 10000;
-    protected Resume[] storage = new Resume[STORAGE_LIMIT];
-    protected int size;
-
     public void save(Resume r) {
         String uuid = r.getUuid();
+        saveResume(r, checkExistIndex(uuid), uuid);
+    }
+
+    protected abstract void saveResume(Resume r, int indexResume, String uuid);
+
+    public void update(Resume r) {
+        String uuid = r.getUuid();
+        updateResume(r, checkNotExistIndex(uuid), uuid);
+    }
+
+    protected abstract void updateResume(Resume r, int indexResume, String uuid);
+
+    public Resume get(String uuid) {
+        return getResume(checkNotExistIndex(uuid), uuid);
+    }
+
+    protected abstract Resume getResume(int indexResume, String uuid);
+
+    public void delete(String uuid) {
+        deleteResume(checkNotExistIndex(uuid), uuid);
+    }
+
+    protected abstract void deleteResume(int indexResume, String uuid);
+
+    protected abstract int findIndex(String uuid);
+
+    private int checkNotExistIndex(String uuid) {
+        int indexResume = findIndex(uuid);
+        if (indexResume < 0) {
+            throw new NotExistStorageException(uuid);
+        }
+        return indexResume;
+    }
+
+    private int checkExistIndex(String uuid) {
         int indexResume = findIndex(uuid);
         if (indexResume >= 0) {
             throw new ExistStorageException(uuid);
         }
-        saveResume(r, indexResume);
-    }
-
-    protected abstract void saveResume(Resume r, int indexResume);
-
-    public void update(Resume r) {
-        String uuid = r.getUuid();
-        int indexResume = findIndex(uuid);
-        checkNotExistIndex(indexResume, uuid);
-        updateResume(r, indexResume);
-    }
-
-    protected abstract void updateResume(Resume r, int indexResume);
-
-    public Resume get(String uuid) {
-        int indexResume = findIndex(uuid);
-        checkNotExistIndex(indexResume, uuid);
-        return getResume(indexResume);
-    }
-
-    protected abstract Resume getResume(int indexResume);
-
-    public void delete(String uuid) {
-        int indexResume = findIndex(uuid);
-        checkNotExistIndex(indexResume, uuid);
-        deleteResume(indexResume);
-    }
-
-    protected abstract void deleteResume(int indexResume);
-
-    protected abstract int findIndex(String uuid);
-
-    private void checkNotExistIndex(int indexResume, String uuid) {
-        if (indexResume < 0) {
-            throw new NotExistStorageException(uuid);
-        }
+        return indexResume;
     }
 }
