@@ -7,45 +7,45 @@ import ru.javawebinar.basejava.model.Resume;
 public abstract class AbstractStorage implements Storage {
     public void save(Resume r) {
         String uuid = r.getUuid();
-        saveResume(r, checkExistIndex(uuid), uuid);
+        saveResume(r, checkExistSearchKey(uuid));
     }
 
-    protected abstract void saveResume(Resume r, int indexResume, String uuid);
+    protected abstract void saveResume(Resume r, Object searchKeyResume);
 
     public void update(Resume r) {
         String uuid = r.getUuid();
-        updateResume(r, checkNotExistIndex(uuid), uuid);
+        updateResume(r, checkNotExistSearchKey(uuid));
     }
 
-    protected abstract void updateResume(Resume r, int indexResume, String uuid);
+    protected abstract void updateResume(Resume r, Object searchKeyResume);
 
     public Resume get(String uuid) {
-        return getResume(checkNotExistIndex(uuid), uuid);
+        return getResume(checkNotExistSearchKey(uuid));
     }
 
-    protected abstract Resume getResume(int indexResume, String uuid);
+    protected abstract Resume getResume(Object searchKeyResume);
 
     public void delete(String uuid) {
-        deleteResume(checkNotExistIndex(uuid), uuid);
+        deleteResume(checkNotExistSearchKey(uuid));
     }
 
-    protected abstract void deleteResume(int indexResume, String uuid);
+    protected abstract void deleteResume(Object searchKeyResume);
 
-    protected abstract int findIndex(String uuid);
+    protected abstract Object findSearchKey(String uuid);
 
-    private int checkNotExistIndex(String uuid) {
-        int indexResume = findIndex(uuid);
-        if (indexResume < 0) {
+    private Object checkNotExistSearchKey(String uuid) {
+        Object searchKeyResume = findSearchKey(uuid);
+        if ((Integer) searchKeyResume < 0) {
             throw new NotExistStorageException(uuid);
         }
-        return indexResume;
+        return searchKeyResume;
     }
 
-    private int checkExistIndex(String uuid) {
-        int indexResume = findIndex(uuid);
-        if (indexResume >= 0) {
+    private Object checkExistSearchKey(String uuid) {
+        Object searchKeyResume = findSearchKey(uuid);
+        if ((Integer) searchKeyResume >= 0) {
             throw new ExistStorageException(uuid);
         }
-        return indexResume;
+        return searchKeyResume;
     }
 }
