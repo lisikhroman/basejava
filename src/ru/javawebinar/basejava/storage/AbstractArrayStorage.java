@@ -53,6 +53,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     protected abstract void shiftArray(int indexResume);
 
+    @Override
+    protected boolean checkSearchKey(Object indexResume) {
+        return (Integer) indexResume >= 0;
+    }
+
     /**
      * @return array, contains only Resumes in storage (without null)
      */

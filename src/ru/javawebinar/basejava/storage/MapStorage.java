@@ -22,21 +22,22 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected Resume getResume(Object uuid) {
-        return map.get(uuid.toString());
+        return map.get((String) uuid);
     }
 
     @Override
     protected void deleteResume(Object uuid) {
-        map.remove(uuid.toString());
+        map.remove((String) uuid);
     }
 
     @Override
     protected Object findSearchKey(String uuid) {
-        if (map.containsKey(uuid)) {
-            return uuid;
-        } else {
-            return -1;
-        }
+        return uuid;
+    }
+
+    @Override
+    protected boolean checkSearchKey(Object uuid) {
+        return map.containsKey(uuid);
     }
 
     @Override

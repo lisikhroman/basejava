@@ -36,6 +36,11 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
+    protected boolean checkSearchKey(Object indexResume) {
+        return !indexResume.equals(-1);
+    }
+
+    @Override
     public void clear() {
         list.clear();
     }
