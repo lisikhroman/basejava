@@ -31,13 +31,12 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected Integer findSearchKey(String uuid) {
-        Resume resume = new Resume(uuid);
-        return list.indexOf(resume);
+        return list.indexOf(new Resume(uuid));
     }
 
     @Override
-    protected boolean checkSearchKey(Object indexResume) {
-        return !indexResume.equals(-1);
+    protected boolean isExist(Object indexResume) {
+        return (Integer) indexResume != -1;
     }
 
     @Override
