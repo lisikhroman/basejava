@@ -44,5 +44,9 @@ public class MainCollections {
         for (Map.Entry<String, Resume> entry : map.entrySet()) {
             System.out.println(entry.getValue());
         }
+
+        List<Resume> resumes = Arrays.asList(RESIME_1, RESIME_2, RESIME_3, RESIME_4);
+        resumes.remove(1);
+        System.out.println(resumes);
     }
 }
