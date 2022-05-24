@@ -9,7 +9,8 @@ import ru.javawebinar.basejava.model.Resume;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 public abstract class AbstractStorageTest {
     private static final String UUID_1 = "uuid1";
@@ -110,6 +111,6 @@ public abstract class AbstractStorageTest {
     public void getAllSorted() {
         List<Resume> expectedResumes = Arrays.asList(RESUME_1, RESUME_2, RESUME_3, RESUME_4);
         List<Resume> actualResumes = storage.getAllSorted();
-        assertArrayEquals(new List[]{expectedResumes}, new List[]{actualResumes});
+        assertEquals(actualResumes, expectedResumes);
     }
 }
