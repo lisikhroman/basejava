@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Array based storage for Resumes
  */
-public abstract class AbstractArrayStorage extends AbstractStorage {
+public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     protected static final int STORAGE_LIMIT = 10000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size;
@@ -24,30 +24,30 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public void saveResume(Resume r, Object indexResume) {
+    public void saveResume(Resume r, Integer indexResume) {
         if (size == storage.length) {
             throw new StorageException("В базе данных резюме закончилось место!!", r.getUuid());
         }
-        saveResumeInArray(r, (Integer) indexResume);
+        saveResumeInArray(r, indexResume);
         size++;
     }
 
     protected abstract void saveResumeInArray(Resume r, int indexResume);
 
     @Override
-    public void updateResume(Resume r, Object indexResume) {
-        storage[(Integer) indexResume] = r;
+    public void updateResume(Resume r, Integer indexResume) {
+        storage[indexResume] = r;
         System.out.println("Резюме " + r.getUuid() + " обновлено!");
     }
 
     @Override
-    protected Resume getResume(Object indexResume) {
-        return storage[(Integer) indexResume];
+    protected Resume getResume(Integer indexResume) {
+        return storage[indexResume];
     }
 
     @Override
-    protected void deleteResume(Object indexResume) {
-        shiftArray((Integer) indexResume);
+    protected void deleteResume(Integer indexResume) {
+        shiftArray(indexResume);
         storage[size - 1] = null;
         size--;
     }
@@ -55,8 +55,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected abstract void shiftArray(int indexResume);
 
     @Override
-    protected boolean isExist(Object indexResume) {
-        return (Integer) indexResume >= 0;
+    protected boolean isExist(Integer indexResume) {
+        return indexResume >= 0;
     }
 
     @Override
