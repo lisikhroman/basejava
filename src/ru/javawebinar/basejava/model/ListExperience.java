@@ -13,4 +13,9 @@ public class ListExperience extends AbstractSection {
     public List<Experience> getExperience() {
         return experience;
     }
+
+    @Override
+    public String toString() {
+        return experience.toString();
+    }
 }

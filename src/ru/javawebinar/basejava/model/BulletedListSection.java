@@ -1,11 +1,10 @@
 package ru.javawebinar.basejava.model;
 
-import java.util.Collections;
 import java.util.List;
 
 public class BulletedListSection extends AbstractSection {
 
-    private List<String> listContent = Collections.singletonList("");
+    private List<String> listContent;
 
     public BulletedListSection(List<String> listContent) {
         this.listContent = listContent;
@@ -17,6 +16,11 @@ public class BulletedListSection extends AbstractSection {
 
     public List<String> getListContent() {
         return listContent;
+    }
+
+    @Override
+    public String toString() {
+        return listContent.toString();
     }
 
 }
