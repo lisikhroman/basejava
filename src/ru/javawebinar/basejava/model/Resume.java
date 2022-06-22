@@ -52,11 +52,19 @@ public class Resume {
         return uuid;
     }
 
-    public Map<ContactType, String> getContacts() {
-        return contacts;
+    public void setContacts(ContactType type, String value) {
+        contacts.put(type, value);
     }
 
-    public Map<SectionType, AbstractSection> getSections() {
-        return sections;
+    public String getContacts(ContactType type) {
+        return contacts.get(type);
+    }
+
+    public AbstractSection getSections(SectionType type) {
+        return sections.get(type);
+    }
+
+    public void setSections(SectionType type, AbstractSection section) {
+        sections.put(type, section);
     }
 }
