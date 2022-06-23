@@ -77,6 +77,7 @@ public class ResumeTestData {
         }
         for (SectionType type : SectionType.values()) {
             System.out.println(type.getTitle() + "\n" + resume_1.getSections(type));
+            System.out.println();
         }
     }
 }
