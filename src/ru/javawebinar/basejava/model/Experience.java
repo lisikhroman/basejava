@@ -43,4 +43,14 @@ public class Experience {
     public String getPostDuties() {
         return postDuties;
     }
+
+    @Override
+    public String toString() {
+        return nameOrganization + " " +
+                websiteLink + '\n' +
+                beginPeriod.getMonthValue() + "/" + beginPeriod.getYear() + " - " +
+                endPeriod.getMonthValue() + "/" + endPeriod.getYear() + '\n' +
+                post + '\n' +
+                postDuties + '\n';
+    }
 }
