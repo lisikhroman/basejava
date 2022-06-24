@@ -1,6 +1,6 @@
 package ru.javawebinar.basejava.model;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -14,9 +14,9 @@ public class Resume {
 
     private final String fullName;
 
-    private final Map<ContactType, String> contacts = new HashMap<>();
+    private final Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
 
-    private final Map<SectionType, AbstractSection> sections = new HashMap<>();
+    private final Map<SectionType, AbstractSection> sections = new EnumMap<>(SectionType.class);
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -35,36 +35,46 @@ public class Resume {
         return fullName;
     }
 
+    public void setContact(ContactType type, String value) {
+        contacts.put(type, value);
+    }
+
+    public String getContact(ContactType type) {
+        return contacts.get(type);
+    }
+
+    public void setSection(SectionType type, AbstractSection section) {
+        sections.put(type, section);
+    }
+
+    public AbstractSection getSection(SectionType type) {
+        return sections.get(type);
+    }
+
+    @Override
+    public String toString() {
+        return uuid;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         Resume resume = (Resume) o;
 
-        return uuid.equals(resume.uuid);
+        if (!uuid.equals(resume.uuid)) return false;
+        if (!fullName.equals(resume.fullName)) return false;
+        if (!contacts.equals(resume.contacts)) return false;
+        return sections.equals(resume.sections);
     }
 
+    @Override
     public int hashCode() {
-        return uuid.hashCode();
-    }
-
-    public String toString() {
-        return uuid;
-    }
-
-    public void setContacts(ContactType type, String value) {
-        contacts.put(type, value);
-    }
-
-    public String getContacts(ContactType type) {
-        return contacts.get(type);
-    }
-
-    public AbstractSection getSections(SectionType type) {
-        return sections.get(type);
-    }
-
-    public void setSections(SectionType type, AbstractSection section) {
-        sections.put(type, section);
+        int result = uuid.hashCode();
+        result = 31 * result + fullName.hashCode();
+        result = 31 * result + contacts.hashCode();
+        result = 31 * result + sections.hashCode();
+        return result;
     }
 }
