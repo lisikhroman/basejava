@@ -40,7 +40,7 @@ public class ResumeTestData {
         )));
         resume_1.setSection(SectionType.EXPERIENCE, new ListExperience(List.of(new Experience(
                 "Enkata"
-                , "http://enkata.com/"
+                ,"http://enkata.com/"
                 , LocalDate.of(2007, 3, 1)
                 , LocalDate.of(2008, 6, 1)
                 , "Разработчик ПО"
@@ -48,7 +48,7 @@ public class ResumeTestData {
                 "Tomcat, JMS) частей кластерного J2EE приложения (OLAP, Data mining)."))));
         resume_1.setSection(SectionType.EXPERIENCE, new ListExperience(List.of(new Experience(
                 "Wrike"
-                , "https://www.wrike.com/"
+                ,"https://www.wrike.com/"
                 , LocalDate.of(2014, 10, 1)
                 , LocalDate.of(2016, 1, 1)
                 , "Старший разработчик (backend)"
@@ -57,14 +57,14 @@ public class ResumeTestData {
                 "Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."))));
         resume_1.setSection(SectionType.EDUCATION, new ListExperience(List.of(new Experience(
                 "Luxoft"
-                , "https://ibs-training.ru/kurs/obektno-orientirovannyy_analiz_i_proektirovanie_na_uml.html"
+                ,"https://ibs-training.ru/kurs/obektno-orientirovannyy_analiz_i_proektirovanie_na_uml.html"
                 , LocalDate.of(2011, 3, 1)
                 , LocalDate.of(2011, 4, 1)
                 , "Курс 'Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.'"
                 , ""))));
         resume_1.setSection(SectionType.EDUCATION, new ListExperience(List.of(new Experience(
                 "Coursera"
-                , "https://www.coursera.org/course/progfun"
+                ,"https://www.coursera.org/course/progfun"
                 , LocalDate.of(2013, 3, 1)
                 , LocalDate.of(2013, 5, 1)
                 , "'Functional Programming Principles in Scala' by Martin Odersky"
