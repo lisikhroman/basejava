@@ -2,6 +2,7 @@ package ru.javawebinar.basejava.storage;
 
 import org.junit.Before;
 import org.junit.Test;
+import ru.javawebinar.basejava.ResumeTestData;
 import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
@@ -27,10 +28,10 @@ public abstract class AbstractStorageTest {
     private static final Resume RESUME_4;
 
     static {
-        RESUME_1 = new Resume(UUID_1, NAME_1);
-        RESUME_2 = new Resume(UUID_2, NAME_2);
-        RESUME_3 = new Resume(UUID_3, NAME_3);
-        RESUME_4 = new Resume(UUID_4, NAME_4);
+        RESUME_1 = ResumeTestData.completionResume(UUID_1, NAME_1);
+        RESUME_2 = ResumeTestData.completionResume(UUID_2, NAME_2);
+        RESUME_3 = ResumeTestData.completionResume(UUID_3, NAME_3);
+        RESUME_4 = ResumeTestData.completionResume(UUID_4, NAME_4);
     }
 
     public Storage storage;
@@ -62,7 +63,7 @@ public abstract class AbstractStorageTest {
     @Test
     public void save() {
         String uuid5 = "uuid5";
-        Resume resume = new Resume(uuid5, "name5");
+        Resume resume = ResumeTestData.completionResume(uuid5, "name5");
         storage.save(resume);
         assertEquals(resume, storage.get(uuid5));
         assertEquals(5, storage.size());
@@ -70,19 +71,19 @@ public abstract class AbstractStorageTest {
 
     @Test(expected = ExistStorageException.class)
     public void saveExist() {
-        storage.save(new Resume(UUID_4, NAME_4));
+        storage.save(ResumeTestData.completionResume(UUID_4, NAME_4));
     }
 
     @Test
     public void update() {
-        Resume resume = new Resume(UUID_1, NAME_1);
+        Resume resume = ResumeTestData.completionResume(UUID_1, NAME_1);
         storage.update(resume);
         assertSame(resume, storage.get(UUID_1));
     }
 
     @Test(expected = NotExistStorageException.class)
     public void updateNotExist() {
-        storage.update(new Resume("uuid6", "name6"));
+        storage.update(ResumeTestData.completionResume("uuid6", "name6"));
     }
 
     @Test

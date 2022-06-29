@@ -29,5 +29,23 @@ public class MainFile {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        outputNameFilesAndCatalog(dir);
+    }
+
+    public static void outputNameFilesAndCatalog(File dir) {
+        File[] files = dir.listFiles();
+
+        if (files != null) {
+            for (File file : files) {
+                if (file.isFile()) {
+                    System.out.println("Имя файла: " + file.getName());
+                } else {
+                    System.out.println("Имя каталога: " + file.getName());
+                    outputNameFilesAndCatalog(file);
+                }
+            }
+        }
+
     }
 }
