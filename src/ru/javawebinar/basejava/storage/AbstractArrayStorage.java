@@ -24,45 +24,43 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    public void saveResume(Resume r, Integer indexResume) {
+    public void saveResume(Resume r, Integer searchKey) {
         if (size == storage.length) {
             throw new StorageException("В базе данных резюме закончилось место!!", r.getUuid());
         }
-        saveResumeInArray(r, indexResume);
+        saveToArray(r, searchKey);
         size++;
     }
 
-    protected abstract void saveResumeInArray(Resume r, int indexResume);
+    protected abstract void saveToArray(Resume r, int index);
 
     @Override
-    public void updateResume(Resume r, Integer indexResume) {
-        storage[indexResume] = r;
+    public void updateResume(Resume r, Integer searchKey) {
+        storage[searchKey] = r;
         System.out.println("Резюме " + r.getUuid() + " обновлено!");
     }
 
     @Override
-    protected Resume getResume(Integer indexResume) {
-        return storage[indexResume];
+    protected Resume getResume(Integer searchKey) {
+        return storage[searchKey];
     }
 
     @Override
-    protected void deleteResume(Integer indexResume) {
-        shiftArray(indexResume);
+    protected void deleteResume(Integer searchKey) {
+        deleteFromArray(searchKey);
         storage[size - 1] = null;
         size--;
     }
 
-    protected abstract void shiftArray(int indexResume);
+    protected abstract void deleteFromArray(int index);
 
     @Override
-    protected boolean isExist(Integer indexResume) {
-        return indexResume >= 0;
+    protected boolean isExist(Integer searchKey) {
+        return searchKey >= 0;
     }
 
     @Override
     public List<Resume> getAll() {
         return Arrays.asList(Arrays.copyOf(storage, size));
     }
-
-    protected abstract Integer findSearchKey(String uuid);
 }

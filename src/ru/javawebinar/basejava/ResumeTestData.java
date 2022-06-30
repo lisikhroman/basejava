@@ -6,16 +6,25 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class ResumeTestData {
-
-    public static String uuid;
-    public static String name;
+    protected static Resume resume;
 
     public static void main(String[] args) {
-        completionResume(uuid, name);
+
+        fillResume("uuid1", "name1");
+
+        for (ContactType type : ContactType.values()) {
+            System.out.println(type.getTitle() + " " + resume.getContact(type));
+        }
+        for (SectionType type : SectionType.values()) {
+            System.out.println(type.getTitle() + "\n" + resume.getSection(type));
+            System.out.println();
+        }
     }
 
-    public static Resume completionResume(String uuid, String name) {
-        Resume resume = new Resume(uuid, name);
+    public static Resume fillResume(String uuid, String name) {
+
+        resume = new Resume(uuid, name);
+
         String numberResume = name.replace("name", "");
 
         resume.setContact(ContactType.PHONE, "phone_" + numberResume);

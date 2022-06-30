@@ -22,22 +22,14 @@ public abstract class AbstractStorageTest {
     private static final String NAME_2 = "name2";
     private static final String NAME_3 = "name3";
     private static final String NAME_4 = "name4";
-    private static final Resume RESUME_1;
-    private static final Resume RESUME_2;
-    private static final Resume RESUME_3;
-    private static final Resume RESUME_4;
-
-    static {
-        RESUME_1 = ResumeTestData.completionResume(UUID_1, NAME_1);
-        RESUME_2 = ResumeTestData.completionResume(UUID_2, NAME_2);
-        RESUME_3 = ResumeTestData.completionResume(UUID_3, NAME_3);
-        RESUME_4 = ResumeTestData.completionResume(UUID_4, NAME_4);
-    }
-
-    public Storage storage;
+    private static final Resume RESUME_1 = ResumeTestData.fillResume(UUID_1, NAME_1);
+    private static final Resume RESUME_2 = ResumeTestData.fillResume(UUID_2, NAME_2);
+    private static final Resume RESUME_3 = ResumeTestData.fillResume(UUID_3, NAME_3);
+    private static final Resume RESUME_4 = ResumeTestData.fillResume(UUID_4, NAME_4);
+    protected static Storage storage;
 
     public AbstractStorageTest(Storage storage) {
-        this.storage = storage;
+        AbstractStorageTest.storage = storage;
     }
 
     @Before
@@ -63,7 +55,7 @@ public abstract class AbstractStorageTest {
     @Test
     public void save() {
         String uuid5 = "uuid5";
-        Resume resume = ResumeTestData.completionResume(uuid5, "name5");
+        Resume resume = ResumeTestData.fillResume(uuid5, "name5");
         storage.save(resume);
         assertEquals(resume, storage.get(uuid5));
         assertEquals(5, storage.size());
@@ -71,19 +63,19 @@ public abstract class AbstractStorageTest {
 
     @Test(expected = ExistStorageException.class)
     public void saveExist() {
-        storage.save(ResumeTestData.completionResume(UUID_4, NAME_4));
+        storage.save(ResumeTestData.fillResume(UUID_4, NAME_4));
     }
 
     @Test
     public void update() {
-        Resume resume = ResumeTestData.completionResume(UUID_1, NAME_1);
+        Resume resume = ResumeTestData.fillResume(UUID_1, NAME_1);
         storage.update(resume);
         assertSame(resume, storage.get(UUID_1));
     }
 
     @Test(expected = NotExistStorageException.class)
     public void updateNotExist() {
-        storage.update(ResumeTestData.completionResume("uuid6", "name6"));
+        storage.update(ResumeTestData.fillResume("uuid6", "name6"));
     }
 
     @Test

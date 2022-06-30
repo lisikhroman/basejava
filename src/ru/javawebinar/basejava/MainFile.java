@@ -30,10 +30,10 @@ public class MainFile {
             throw new RuntimeException(e);
         }
 
-        outputNameFilesAndCatalog(dir);
+        printFilesName(dir);
     }
 
-    public static void outputNameFilesAndCatalog(File dir) {
+    public static void printFilesName(File dir) {
         File[] files = dir.listFiles();
 
         if (files != null) {
@@ -41,8 +41,7 @@ public class MainFile {
                 if (file.isFile()) {
                     System.out.println("Имя файла: " + file.getName());
                 } else {
-                    System.out.println("Имя каталога: " + file.getName());
-                    outputNameFilesAndCatalog(file);
+                    printFilesName(file);
                 }
             }
         }

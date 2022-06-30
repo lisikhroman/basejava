@@ -12,23 +12,23 @@ public class MapStorage extends AbstractStorage<String> {
     private final Map<String, Resume> map = new HashMap<>();
 
     @Override
-    protected void saveResume(Resume r, String uuid) {
-        map.put(uuid, r);
+    protected void saveResume(Resume r, String searchKey) {
+        map.put(searchKey, r);
     }
 
     @Override
-    protected void updateResume(Resume r, String uuid) {
-        map.put(uuid, r);
+    protected void updateResume(Resume r, String searchKey) {
+        map.put(searchKey, r);
     }
 
     @Override
-    protected Resume getResume(String uuid) {
-        return map.get(uuid);
+    protected Resume getResume(String searchKey) {
+        return map.get(searchKey);
     }
 
     @Override
-    protected void deleteResume(String uuid) {
-        map.remove(uuid);
+    protected void deleteResume(String searchKey) {
+        map.remove(searchKey);
     }
 
     @Override
@@ -37,8 +37,8 @@ public class MapStorage extends AbstractStorage<String> {
     }
 
     @Override
-    protected boolean isExist(String uuid) {
-        return map.containsKey(uuid);
+    protected boolean isExist(String searchKey) {
+        return map.containsKey(searchKey);
     }
 
     @Override

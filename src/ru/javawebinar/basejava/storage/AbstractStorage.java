@@ -18,7 +18,7 @@ public abstract class AbstractStorage<SK> implements Storage {
         saveResume(r, receiveNotExistedSearchKey(uuid));
     }
 
-    protected abstract void saveResume(Resume r, SK searchKeyResume);
+    protected abstract void saveResume(Resume r, SK searchKey);
 
     public void update(Resume r) {
         LOG.info("Update " + r);
@@ -26,41 +26,41 @@ public abstract class AbstractStorage<SK> implements Storage {
         updateResume(r, receiveExistedSearchKey(uuid));
     }
 
-    protected abstract void updateResume(Resume r, SK searchKeyResume);
+    protected abstract void updateResume(Resume r, SK searchKey);
 
     public Resume get(String uuid) {
         LOG.info("Get " + uuid);
         return getResume(receiveExistedSearchKey(uuid));
     }
 
-    protected abstract Resume getResume(SK searchKeyResume);
+    protected abstract Resume getResume(SK searchKey);
 
     public void delete(String uuid) {
         LOG.info("Delete " + uuid);
         deleteResume(receiveExistedSearchKey(uuid));
     }
 
-    protected abstract void deleteResume(SK searchKeyResume);
+    protected abstract void deleteResume(SK searchKey);
 
     protected abstract SK findSearchKey(String uuid);
 
     private SK receiveExistedSearchKey(String uuid) {
-        SK searchKeyResume = findSearchKey(uuid);
-        if (!isExist(searchKeyResume)) {
+        SK searchKey = findSearchKey(uuid);
+        if (!isExist(searchKey)) {
             throw new NotExistStorageException(uuid);
         }
-        return searchKeyResume;
+        return searchKey;
     }
 
     private SK receiveNotExistedSearchKey(String uuid) {
-        SK searchKeyResume = findSearchKey(uuid);
-        if (isExist(searchKeyResume)) {
+        SK searchKey = findSearchKey(uuid);
+        if (isExist(searchKey)) {
             throw new ExistStorageException(uuid);
         }
-        return searchKeyResume;
+        return searchKey;
     }
 
-    protected abstract boolean isExist(SK searchKeyResume);
+    protected abstract boolean isExist(SK searchKey);
 
     @Override
     public List<Resume> getAllSorted() {

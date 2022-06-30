@@ -25,32 +25,32 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     }
 
     @Override
-    protected void saveResume(Resume r, File file) {
+    protected void saveResume(Resume r, File searchKey) {
         try {
-            file.createNewFile();
-            doWrite(r, file);
+            searchKey.createNewFile();
+            doWrite(r, searchKey);
         } catch (IOException e) {
-            throw new StorageException("IO error", file.getName(), e);
+            throw new StorageException("IO error", searchKey.getName(), e);
         }
     }
 
     protected abstract void doWrite(Resume r, File file);
 
     @Override
-    protected void updateResume(Resume r, File file) {
-        doWrite(r, file);
+    protected void updateResume(Resume r, File searchKey) {
+        doWrite(r, searchKey);
     }
 
     @Override
-    protected Resume getResume(File file) {
-        return doRead(file);
+    protected Resume getResume(File searchKey) {
+        return doRead(searchKey);
     }
 
     protected abstract Resume doRead(File file);
 
     @Override
-    protected void deleteResume(File file) {
-        file.delete();
+    protected void deleteResume(File searchKey) {
+        searchKey.delete();
     }
 
     @Override
@@ -59,14 +59,14 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     }
 
     @Override
-    protected boolean isExist(File file) {
-        return file.exists();
+    protected boolean isExist(File searchKey) {
+        return searchKey.exists();
     }
 
     @Override
     protected List<Resume> getAll() {
         List<Resume> listResumes = new ArrayList<>();
-        for (File file: Objects.requireNonNull(directory.listFiles(), "directory.listFiles() must not be null")) {
+        for (File file : Objects.requireNonNull(directory.listFiles(), "directory.listFiles() must not be null")) {
             listResumes.add(getResume(file));
         }
         return listResumes;

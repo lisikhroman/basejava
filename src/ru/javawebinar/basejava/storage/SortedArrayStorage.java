@@ -17,16 +17,16 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     private static final Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getUuid);
 
     @Override
-    protected void saveResumeInArray(Resume r, int indexResume) {
-        int freeIndex = -indexResume - 1;
+    protected void saveToArray(Resume r, int index) {
+        int freeIndex = -index - 1;
         System.arraycopy(storage, freeIndex, storage, freeIndex + 1, size - freeIndex);
         storage[freeIndex] = r;
     }
 
-    protected void shiftArray(int indexResume) {
-        int quantityResume = size - indexResume - 1;
+    protected void deleteFromArray(int index) {
+        int quantityResume = size - index - 1;
         if (quantityResume > 0) {
-            System.arraycopy(storage, indexResume + 1, storage, indexResume, quantityResume);
+            System.arraycopy(storage, index + 1, storage, index, quantityResume);
         }
     }
 
