@@ -3,8 +3,7 @@ package ru.javawebinar.basejava.storage;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -25,32 +24,40 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     }
 
     @Override
-    protected void saveResume(Resume r, File searchKey) {
+    protected void saveResume(Resume r, File file) {
         try {
-            searchKey.createNewFile();
-            doWrite(r, searchKey);
+            file.createNewFile();
+            doWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
-            throw new StorageException("IO error", searchKey.getName(), e);
+            throw new StorageException("IO error", file.getName(), e);
         }
     }
 
-    protected abstract void doWrite(Resume r, File file);
+    protected abstract void doWrite(Resume r, OutputStream file) throws IOException;
 
     @Override
-    protected void updateResume(Resume r, File searchKey) {
-        doWrite(r, searchKey);
+    protected void updateResume(Resume r, File file) {
+        try {
+            doWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
+        } catch (IOException e) {
+            throw new StorageException("File write error", r.getUuid(), e);
+        }
     }
 
     @Override
-    protected Resume getResume(File searchKey) {
-        return doRead(searchKey);
+    protected Resume getResume(File file) {
+        try {
+            return doRead(new BufferedInputStream(new FileInputStream(file)));
+        } catch (IOException e) {
+            throw new StorageException("File read error", file.getName(), e);
+        }
     }
 
-    protected abstract Resume doRead(File file);
+    protected abstract Resume doRead(InputStream file) throws IOException;
 
     @Override
-    protected void deleteResume(File searchKey) {
-        searchKey.delete();
+    protected void deleteResume(File file) {
+        file.delete();
     }
 
     @Override
@@ -59,8 +66,8 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     }
 
     @Override
-    protected boolean isExist(File searchKey) {
-        return searchKey.exists();
+    protected boolean isExist(File file) {
+        return file.exists();
     }
 
     @Override
