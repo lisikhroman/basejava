@@ -7,10 +7,10 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 public abstract class AbstractPathStorage extends AbstractStorage<Path> {
 
@@ -19,65 +19,71 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     protected AbstractPathStorage(String dir) {
         directory = Paths.get(dir);
         Objects.requireNonNull(directory, "directory must not be null");
-        if (!Files.isDirectory(directory) || Files.isWritable(directory)) {
-                throw new IllegalArgumentException(dir + " is not directory or is not writable");
-            }
+//        if (!Files.isDirectory(directory) || !Files.isWritable(directory)) {
+//                throw new IllegalArgumentException(dir + " is not directory or is not writable");
+//            }
     }
 
     @Override
-    protected void saveResume(Resume r, File file) {
+    protected void saveResume(Resume r, Path path) {
         try {
-            file.createNewFile();
-            doWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
+            Files.createFile(path);
+            doWrite(r, new BufferedOutputStream(Files.newOutputStream(path)));
         } catch (IOException e) {
-            throw new StorageException("IO error", file.getName(), e);
+            throw new StorageException("Could not create path", path.getFileName().toString(), e);
         }
     }
 
     protected abstract void doWrite(Resume r, OutputStream os) throws IOException;
 
     @Override
-    protected void updateResume(Resume r, File file) {
+    protected void updateResume(Resume r, Path path) {
         try {
-            doWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
+            doWrite(r, new BufferedOutputStream(Files.newOutputStream(path)));
         } catch (IOException e) {
-            throw new StorageException("File write error", r.getUuid(), e);
+            throw new StorageException("Path write error", path.getFileName().toString(), e);
         }
     }
 
     @Override
-    protected Resume getResume(File file) {
+    protected Resume getResume(Path path) {
         try {
-            return doRead(new BufferedInputStream(new FileInputStream(file)));
+            return doRead(new BufferedInputStream(Files.newInputStream(path)));
         } catch (IOException e) {
-            throw new StorageException("File read error", file.getName(), e);
+            throw new StorageException("Path read error", path.getFileName().toString(), e);
         }
     }
 
     protected abstract Resume doRead(InputStream is) throws IOException;
 
     @Override
-    protected void deleteResume(File file) {
-        file.delete();
+    protected void deleteResume(Path path) {
+        try {
+            Files.delete(path);
+        } catch (IOException e) {
+            throw new StorageException("Path delete error", path.getFileName().toString(), e);
+        }
     }
 
     @Override
-    protected File findSearchKey(String uuid) {
-        return new File(directory, uuid);
+    protected Path findSearchKey(String uuid) {
+        return directory.resolve(uuid);
     }
 
     @Override
-    protected boolean isExist(File file) {
-        return file.exists();
+    protected boolean isExist(Path path) {
+        return Files.isRegularFile(path);
     }
 
     @Override
     protected List<Resume> getAll() {
-        List<Resume> listResumes = new ArrayList<>();
-        for (File file : Objects.requireNonNull(directory.listFiles(), "directory.listFiles() must not be null")) {
-            listResumes.add(getResume(file));
+        Collection<Resume> listResumes = null;
+        try {
+            listResumes = Files.list(directory).map(this::getResume).toList();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return listResumes;
+        return Objects.requireNonNull(listResumes).stream().toList();
     }
 
     @Override
@@ -85,12 +91,17 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
         try {
             Files.list(directory).forEach(this::deleteResume);
         } catch (IOException e) {
-            throw new StorageException("path delete error", null);
+            throw new StorageException("Path delete error", null, e);
         }
     }
 
     @Override
     public int size() {
-        return Objects.requireNonNull(directory.list(), "directory.list() must not be null").length;
+        try {
+            Stream<Path> files = Files.list(Paths.get(String.valueOf(directory)));
+            return (int) files.count();
+        } catch (IOException e) {
+            throw new StorageException("Path size error", null, e);
+        }
     }
 }
