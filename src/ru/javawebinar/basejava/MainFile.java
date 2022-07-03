@@ -39,9 +39,10 @@ public class MainFile {
         if (files != null) {
             for (File file : files) {
                 if (file.isFile()) {
-                    System.out.println("Имя файла: " + file.getName());
+                    System.out.println("  " + "Имя файла: " + file.getName());
                 } else {
                     printFilesName(file);
+                    System.out.println(" " + "Имя каталога: " + file.getName());
                 }
             }
         }
