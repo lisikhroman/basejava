@@ -7,9 +7,9 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public abstract class AbstractPathStorage extends AbstractStorage<Path> {
@@ -19,9 +19,9 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     protected AbstractPathStorage(String dir) {
         directory = Paths.get(dir);
         Objects.requireNonNull(directory, "directory must not be null");
-//        if (!Files.isDirectory(directory) || !Files.isWritable(directory)) {
-//                throw new IllegalArgumentException(dir + " is not directory or is not writable");
-//            }
+        if (!Files.isDirectory(directory) || !Files.isWritable(directory)) {
+            throw new IllegalArgumentException(dir + " is not directory or is not writable");
+        }
     }
 
     @Override
@@ -77,13 +77,13 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
 
     @Override
     protected List<Resume> getAll() {
-        Collection<Resume> listResumes = null;
+        List<Resume> listResumes = null;
         try {
-            listResumes = Files.list(directory).map(this::getResume).toList();
+            listResumes = Files.list(directory).map(this::getResume).collect(Collectors.toList());
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new StorageException("Could not find path", null, e);
         }
-        return Objects.requireNonNull(listResumes).stream().toList();
+        return listResumes;
     }
 
     @Override

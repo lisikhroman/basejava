@@ -30,19 +30,20 @@ public class MainFile {
             throw new RuntimeException(e);
         }
 
-        printFilesName(dir);
+        printFilesName(dir, "");
     }
 
-    public static void printFilesName(File dir) {
+    public static void printFilesName(File dir, String tab) {
         File[] files = dir.listFiles();
 
         if (files != null) {
             for (File file : files) {
                 if (file.isFile()) {
-                    System.out.println("  " + "Имя файла: " + file.getName());
+                    tab = " ";
+                    System.out.println(tab + "Имя файла: " + file.getName());
                 } else {
-                    printFilesName(file);
-                    System.out.println(" " + "Имя каталога: " + file.getName());
+                    System.out.println("Имя каталога: " + file.getName());
+                    printFilesName(file, tab);
                 }
             }
         }
