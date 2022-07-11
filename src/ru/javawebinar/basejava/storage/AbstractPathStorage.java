@@ -15,8 +15,10 @@ import java.util.stream.Stream;
 public abstract class AbstractPathStorage extends AbstractStorage<Path> {
 
     private final Path directory;
+    private final SaveStrategy saveStrategy;
 
-    protected AbstractPathStorage(String dir) {
+    protected AbstractPathStorage(String dir, SaveStrategy saveStrategy) {
+        this.saveStrategy = saveStrategy;
         directory = Paths.get(dir);
         Objects.requireNonNull(directory, "directory must not be null");
         if (!Files.isDirectory(directory) || !Files.isWritable(directory)) {
@@ -28,7 +30,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     protected void saveResume(Resume r, Path path) {
         try {
             Files.createFile(path);
-            doWrite(r, new BufferedOutputStream(Files.newOutputStream(path)));
+            saveStrategy.doWrite(r, new BufferedOutputStream(Files.newOutputStream(path)));
         } catch (IOException e) {
             throw new StorageException("Could not create path", path.getFileName().toString(), e);
         }
@@ -39,7 +41,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     @Override
     protected void updateResume(Resume r, Path path) {
         try {
-            doWrite(r, new BufferedOutputStream(Files.newOutputStream(path)));
+            saveStrategy.doWrite(r, new BufferedOutputStream(Files.newOutputStream(path)));
         } catch (IOException e) {
             throw new StorageException("Path write error", path.getFileName().toString(), e);
         }
@@ -48,7 +50,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     @Override
     protected Resume getResume(Path path) {
         try {
-            return doRead(new BufferedInputStream(Files.newInputStream(path)));
+            return saveStrategy.doRead(new BufferedInputStream(Files.newInputStream(path)));
         } catch (IOException e) {
             throw new StorageException("Path read error", path.getFileName().toString(), e);
         }
@@ -77,7 +79,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
 
     @Override
     protected List<Resume> getAll() {
-        List<Resume> listResumes = null;
+        List<Resume> listResumes;
         try {
             listResumes = Files.list(directory).map(this::getResume).collect(Collectors.toList());
         } catch (IOException e) {
@@ -103,5 +105,9 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
         } catch (IOException e) {
             throw new StorageException("Path size error", null, e);
         }
+    }
+
+    public SaveStrategy getSaveStrategy() {
+        return saveStrategy;
     }
 }
