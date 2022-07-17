@@ -98,7 +98,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
         return saveStrategy;
     }
 
-    private Stream<Path> getFilesList(){
+    private Stream<Path> getFilesList() {
         try {
             return Files.list(directory);
         } catch (IOException e) {

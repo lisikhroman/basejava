@@ -4,7 +4,6 @@ import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.io.*;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -30,10 +29,10 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     protected void saveResume(Resume r, File file) {
         try {
             file.createNewFile();
-            saveStrategy.doWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("IO error", file.getName(), e);
         }
+        updateResume(r, file);
     }
 
     protected abstract void doWrite(Resume r, OutputStream os) throws IOException;
@@ -60,10 +59,8 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected void deleteResume(File file) {
-        try {
-            file.delete();
-        } catch (IOException e) {
-            throw new StorageException("File delete error", file.getName().toString(), e);
+        if (!file.delete()) {
+            throw new StorageException("File delete error", file.getName().toString());
         }
     }
 
@@ -80,7 +77,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected List<Resume> getAll() {
         List<Resume> listResumes = new ArrayList<>();
-        for (File file : Objects.requireNonNull(directory.listFiles(), "directory.listFiles() must not be null")) {
+        for (File file : getListFiles()) {
             listResumes.add(getResume(file));
         }
         return listResumes;
@@ -105,7 +102,11 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         return saveStrategy;
     }
 
-    private File[] getListFiles(){
+    private File[] getListFiles() {
+        File[] files = directory.listFiles();
+        if (files == null) {
+            throw new StorageException("Directory find error", null);
+        }
         return directory.listFiles();
     }
 }
