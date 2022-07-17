@@ -4,6 +4,7 @@ import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -59,7 +60,11 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected void deleteResume(File file) {
-        file.delete();
+        try {
+            file.delete();
+        } catch (IOException e) {
+            throw new StorageException("File delete error", file.getName().toString(), e);
+        }
     }
 
     @Override
@@ -83,7 +88,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     public void clear() {
-        File[] files = directory.listFiles();
+        File[] files = getListFiles();
         if (files != null) {
             for (File file : files) {
                 deleteResume(file);
@@ -93,10 +98,14 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     public int size() {
-        return Objects.requireNonNull(directory.list(), "directory.list() must not be null").length;
+        return getListFiles().length;
     }
 
     public SaveStrategy getSaveStrategy() {
         return saveStrategy;
+    }
+
+    private File[] getListFiles(){
+        return directory.listFiles();
     }
 }

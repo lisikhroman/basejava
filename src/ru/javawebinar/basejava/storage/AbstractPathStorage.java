@@ -30,10 +30,10 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     protected void saveResume(Resume r, Path path) {
         try {
             Files.createFile(path);
-            saveStrategy.doWrite(r, new BufferedOutputStream(Files.newOutputStream(path)));
         } catch (IOException e) {
             throw new StorageException("Could not create path", path.getFileName().toString(), e);
         }
+        updateResume(r, path);
     }
 
     protected abstract void doWrite(Resume r, OutputStream os) throws IOException;
@@ -80,34 +80,29 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     @Override
     protected List<Resume> getAll() {
         List<Resume> listResumes;
-        try {
-            listResumes = Files.list(directory).map(this::getResume).collect(Collectors.toList());
-        } catch (IOException e) {
-            throw new StorageException("Could not find path", null, e);
-        }
+        listResumes = getFilesList().map(this::getResume).collect(Collectors.toList());
         return listResumes;
     }
 
     @Override
     public void clear() {
-        try {
-            Files.list(directory).forEach(this::deleteResume);
-        } catch (IOException e) {
-            throw new StorageException("Path delete error", null, e);
-        }
+        getFilesList().forEach(this::deleteResume);
     }
 
     @Override
     public int size() {
-        try {
-            Stream<Path> files = Files.list(Paths.get(String.valueOf(directory)));
-            return (int) files.count();
-        } catch (IOException e) {
-            throw new StorageException("Path size error", null, e);
-        }
+        return (int) getFilesList().count();
     }
 
     public SaveStrategy getSaveStrategy() {
         return saveStrategy;
+    }
+
+    private Stream<Path> getFilesList(){
+        try {
+            return Files.list(directory);
+        } catch (IOException e) {
+            throw new StorageException("Directory find error", null, e);
+        }
     }
 }
