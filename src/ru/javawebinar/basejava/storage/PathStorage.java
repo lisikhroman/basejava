@@ -3,7 +3,9 @@ package ru.javawebinar.basejava.storage;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,12 +14,12 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public abstract class AbstractPathStorage extends AbstractStorage<Path> {
+public class PathStorage extends AbstractStorage<Path> {
 
     private final Path directory;
     private final SaveStrategy saveStrategy;
 
-    protected AbstractPathStorage(String dir, SaveStrategy saveStrategy) {
+    protected PathStorage(String dir, SaveStrategy saveStrategy) {
         this.saveStrategy = saveStrategy;
         directory = Paths.get(dir);
         Objects.requireNonNull(directory, "directory must not be null");
@@ -36,8 +38,6 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
         updateResume(r, path);
     }
 
-    protected abstract void doWrite(Resume r, OutputStream os) throws IOException;
-
     @Override
     protected void updateResume(Resume r, Path path) {
         try {
@@ -55,8 +55,6 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
             throw new StorageException("Path read error", path.getFileName().toString(), e);
         }
     }
-
-    protected abstract Resume doRead(InputStream is) throws IOException;
 
     @Override
     protected void deleteResume(Path path) {
@@ -92,10 +90,6 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     @Override
     public int size() {
         return (int) getFilesList().count();
-    }
-
-    public SaveStrategy getSaveStrategy() {
-        return saveStrategy;
     }
 
     private Stream<Path> getFilesList() {

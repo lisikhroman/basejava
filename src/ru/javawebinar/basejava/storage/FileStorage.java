@@ -8,12 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class AbstractFileStorage extends AbstractStorage<File> {
+public class FileStorage extends AbstractStorage<File> {
 
     private final File directory;
     private final SaveStrategy saveStrategy;
 
-    protected AbstractFileStorage(File directory, SaveStrategy saveStrategy) {
+    protected FileStorage(File directory, SaveStrategy saveStrategy) {
         this.saveStrategy = saveStrategy;
         Objects.requireNonNull(directory, "directory must not be null");
         if (!directory.isDirectory()) {
@@ -35,8 +35,6 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         updateResume(r, file);
     }
 
-    protected abstract void doWrite(Resume r, OutputStream os) throws IOException;
-
     @Override
     protected void updateResume(Resume r, File file) {
         try {
@@ -54,8 +52,6 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
             throw new StorageException("File read error", file.getName(), e);
         }
     }
-
-    protected abstract Resume doRead(InputStream is) throws IOException;
 
     @Override
     protected void deleteResume(File file) {
@@ -96,10 +92,6 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     public int size() {
         return getListFiles().length;
-    }
-
-    public SaveStrategy getSaveStrategy() {
-        return saveStrategy;
     }
 
     private File[] getListFiles() {
