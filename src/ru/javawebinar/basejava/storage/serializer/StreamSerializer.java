@@ -1,4 +1,4 @@
-package ru.javawebinar.basejava.storage;
+package ru.javawebinar.basejava.storage.serializer;
 
 import ru.javawebinar.basejava.model.Resume;
 
@@ -9,7 +9,7 @@ import java.io.OutputStream;
 /**
  * Array based storage for Resumes
  */
-public interface SaveStrategy {
+public interface StreamSerializer {
 
     Resume doRead(InputStream is) throws IOException;
 
