@@ -1,11 +1,9 @@
 package ru.javawebinar.basejava.model;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
 public class Experience implements Serializable {
-    @Serial
     private static final long serialVersionUID = 1L;
 
     private final Link homePage;
