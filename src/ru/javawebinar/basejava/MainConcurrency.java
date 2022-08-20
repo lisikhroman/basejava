@@ -8,7 +8,7 @@ import java.util.List;
 public class MainConcurrency {
     private static int counter;
     private static final Object lock = new Object();
-    private static int THREADS_NUMBERS = 10000;
+    private static final int THREADS_NUMBERS = 10000;
 
     public static void main(String[] args) throws InterruptedException {
         System.out.println(Thread.currentThread().getName());
@@ -18,15 +18,9 @@ public class MainConcurrency {
                 System.out.println(getName() + " " + getState());
             }
         }.start();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                System.out.println(Thread.currentThread().getName() + " " + Thread.currentThread().getState());
-            }
-        }).start();
+        new Thread(() -> System.out.println(Thread.currentThread().getName() + " " + Thread.currentThread().getState())).start();
         {
         }
-        ;
 
         final MainConcurrency mainConcurrency = new MainConcurrency();
         List<Thread> threads = new ArrayList<>(THREADS_NUMBERS);
