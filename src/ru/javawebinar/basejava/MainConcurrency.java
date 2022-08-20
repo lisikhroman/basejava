@@ -1,5 +1,7 @@
 package ru.javawebinar.basejava;
 
+import ru.javawebinar.basejava.util.LazySingleton;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +52,31 @@ public class MainConcurrency {
 
         Thread.sleep(500);
         System.out.println(counter);
+
+        LazySingleton.getInstance();
+
+        final String lock1 = "lock1";
+        final String lock2 = "lock2";
+        deadlock(lock1, lock2);
+        deadlock(lock2, lock1);
+    }
+
+    private static void deadlock(Object lock1, Object lock2) {
+        new Thread(() -> {
+            System.out.println("ожидаем" + lock1);
+            synchronized (lock1) {
+                System.out.println("захватываем" + lock1);
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("ожидаем" + lock2);
+                synchronized (lock2) {
+                    System.out.println("захватываем" + lock2);
+                }
+            }
+        }).start();
     }
 
     private synchronized void inc() {
