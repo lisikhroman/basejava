@@ -2,8 +2,8 @@ package ru.javawebinar.basejava;
 
 import ru.javawebinar.basejava.util.LazySingleton;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.concurrent.*;
 
 public class MainConcurrency {
     private static int counter;
@@ -23,27 +23,48 @@ public class MainConcurrency {
         }
 
         final MainConcurrency mainConcurrency = new MainConcurrency();
-        List<Thread> threads = new ArrayList<>(THREADS_NUMBERS);
+        CountDownLatch latch = new CountDownLatch(THREADS_NUMBERS);
+        ExecutorService executorService = Executors.newCachedThreadPool();
+        CompletionService CcmpletionService = new ExecutorCompletionService(executorService);
+        ThreadLocal<SimpleDateFormat> DATE_FORMAT = new ThreadLocal<SimpleDateFormat>() {
+            @Override
+            protected SimpleDateFormat initialValue() {
+                return new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+            }
+
+            ;
+        };
+//        List<Thread> threads = new ArrayList<>(THREADS_NUMBERS);
 
         for (int i = 0; i < THREADS_NUMBERS; i++) {
-            Thread thread = new Thread(() -> {
+            Future<Integer> future = executorService.submit(() -> {
                 for (int j = 0; j < 100; j++) {
                     mainConcurrency.inc();
                 }
+                latch.countDown();
+                return 5;
             });
-            thread.start();
-            threads.add(thread);
-            thread.join();
+            System.out.println(future.isDone());
+//            Thread thread = new Thread(() -> {
+//                for (int j = 0; j < 100; j++) {
+//                    mainConcurrency.inc();
+//                }
+//                latch.countDown();
+//            });
+//            thread.start();
+////            threads.add(thread);
+////            thread.join();
         }
 
-        threads.forEach(t -> {
-            try {
-                t.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
-
+//        threads.forEach(t -> {
+//            try {
+//                t.join();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        });
+        latch.await(10, TimeUnit.SECONDS);
+        executorService.shutdown();
         Thread.sleep(500);
         System.out.println(counter);
 
