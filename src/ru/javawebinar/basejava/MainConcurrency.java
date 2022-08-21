@@ -6,9 +6,9 @@ import java.text.SimpleDateFormat;
 import java.util.concurrent.*;
 
 public class MainConcurrency {
-    private static int counter;
     private static final Object lock = new Object();
     private static final int THREADS_NUMBERS = 10000;
+    private static int counter;
 
     public static void main(String[] args) throws InterruptedException {
         System.out.println(Thread.currentThread().getName());
@@ -31,8 +31,6 @@ public class MainConcurrency {
             protected SimpleDateFormat initialValue() {
                 return new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
             }
-
-            ;
         };
 //        List<Thread> threads = new ArrayList<>(THREADS_NUMBERS);
 

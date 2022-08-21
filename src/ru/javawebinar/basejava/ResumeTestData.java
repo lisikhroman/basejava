@@ -45,49 +45,49 @@ public class ResumeTestData {
                 "•\tqualification_1_" + numberResume
                 , "•\tqualification_2_" + numberResume
         )));
-        resume.setSection(SectionType.EXPERIENCE, new ListExperience(List.of(new Experience(
+        resume.setSection(SectionType.EXPERIENCE, new ListExperience(new Experience(
                 "nameOrganisation_1_" + numberResume
                 , "websiteLink_1_" + numberResume
-                , List.of(new Period(LocalDate.of(2007, 3, 1), LocalDate.of(2008, 6, 1)
+                , new Experience.Period(LocalDate.of(2007, 3, 1), LocalDate.of(2008, 6, 1)
                 , "post_1_" + numberResume
                 , "postDuties_1_" + numberResume)
-        )))));
-        resume.setSection(SectionType.EXPERIENCE, new ListExperience(List.of(new Experience(
+        )));
+        resume.setSection(SectionType.EXPERIENCE, new ListExperience(new Experience(
                 "nameOrganisation_2_" + numberResume
                 , "websiteLink_2_" + numberResume
-                , List.of(new Period(LocalDate.of(2014, 10, 1)
+                , new Experience.Period(LocalDate.of(2014, 10, 1)
                 , LocalDate.of(2016, 1, 1)
                 , "post_2_" + numberResume
                 , "postDuties_2_" + numberResume)
-        )))));
-        resume.setSection(SectionType.EDUCATION, new ListExperience(List.of(new Experience(
+        )));
+        resume.setSection(SectionType.EDUCATION, new ListExperience(new Experience(
                 "nameOrganisation_3_" + numberResume
                 , "websiteLink_3_" + numberResume
-                , List.of(new Period(LocalDate.of(2011, 3, 1)
+                , new Experience.Period(LocalDate.of(2011, 3, 1)
                 , LocalDate.of(2011, 4, 1)
                 , "post_3_" + numberResume
                 , "")
-        )))));
-        resume.setSection(SectionType.EDUCATION, new ListExperience(List.of(new Experience(
+        )));
+        resume.setSection(SectionType.EDUCATION, new ListExperience(new Experience(
                 "nameOrganisation_4_" + numberResume
                 , "websiteLink_4_" + numberResume
-                , List.of(new Period(LocalDate.of(2013, 3, 1)
+                , new Experience.Period(LocalDate.of(2013, 3, 1)
                 , LocalDate.of(2013, 5, 1)
                 , "post_4_" + numberResume
                 , "")
-        )))));
-        resume.setSection(SectionType.EDUCATION, new ListExperience(List.of(new Experience(
+        )));
+        resume.setSection(SectionType.EDUCATION, new ListExperience(new Experience(
                 "nameOrganisation_5_" + numberResume
                 , "websiteLink_5_" + numberResume
-                , List.of(new Period(LocalDate.of(1993, 9, 1)
-                        , LocalDate.of(1997, 7, 1)
-                        , "post_5_1_" + numberResume
-                        , "")
-                , new Period(LocalDate.of(1987, 9, 1)
-                        , LocalDate.of(1993, 7, 1)
-                        , "post_5_2_" + numberResume
-                        , "")
-        )))));
+                , new Experience.Period(LocalDate.of(1993, 9, 1)
+                , LocalDate.of(1997, 7, 1)
+                , "post_5_1_" + numberResume
+                , "")
+                , new Experience.Period(LocalDate.of(1987, 9, 1)
+                , LocalDate.of(1993, 7, 1)
+                , "post_5_2_" + numberResume
+                , "")
+        )));
 
         return resume;
     }
