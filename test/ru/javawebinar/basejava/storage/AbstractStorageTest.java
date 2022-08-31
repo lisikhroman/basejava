@@ -11,6 +11,7 @@ import ru.javawebinar.basejava.model.Resume;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 
@@ -18,14 +19,15 @@ public abstract class AbstractStorageTest {
 
     protected final static File STORAGE_DIR = Config.get().getStorageDir();
 
-    private static final String UUID_1 = "uuid1";
-    private static final String UUID_2 = "uuid2";
-    private static final String UUID_3 = "uuid3";
-    private static final String UUID_4 = "uuid4";
+    private static final String UUID_1 = UUID.randomUUID().toString();
+    private static final String UUID_2 = UUID.randomUUID().toString();
+    private static final String UUID_3 = UUID.randomUUID().toString();
+    private static final String UUID_4 = UUID.randomUUID().toString();
     private static final String NAME_1 = "name1";
     private static final String NAME_2 = "name2";
     private static final String NAME_3 = "name3";
     private static final String NAME_4 = "name4";
+
     private static final Resume RESUME_1 = ResumeTestData.fillResume(UUID_1, NAME_1);
     private static final Resume RESUME_2 = ResumeTestData.fillResume(UUID_2, NAME_2);
     private static final Resume RESUME_3 = ResumeTestData.fillResume(UUID_3, NAME_3);
@@ -108,6 +110,6 @@ public abstract class AbstractStorageTest {
     public void getAllSorted() {
         List<Resume> expectedResumes = Arrays.asList(RESUME_1, RESUME_2, RESUME_3, RESUME_4);
         List<Resume> actualResumes = storage.getAllSorted();
-        assertEquals(expectedResumes, actualResumes);
+        assertEquals(actualResumes, expectedResumes);
     }
 }
