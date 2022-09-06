@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public abstract class AbstractStorageTest {
 
@@ -76,7 +77,7 @@ public abstract class AbstractStorageTest {
     public void update() {
         Resume resume = ResumeTestData.fillResume(UUID_1, NAME_1);
         storage.update(resume);
-        assertEquals(resume, storage.get(UUID_1));
+        assertTrue(resume.equals(storage.get(UUID_1)));
     }
 
     @Test(expected = NotExistStorageException.class)

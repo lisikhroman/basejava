@@ -24,15 +24,15 @@ public class ResumeTestData {
 
         resume = new Resume(uuid, name);
 
-//        String numberResume = name.replace("name", "");
-//
-//        resume.setContact(ContactType.PHONE, "phone_" + numberResume);
-//        resume.setContact(ContactType.SKYPE, "skype_" + numberResume);
-//        resume.setContact(ContactType.EMAIL, "email_" + numberResume);
-//        resume.setContact(ContactType.LINKEDIN_PROFILE, "linkedin_profile_" + numberResume);
-//        resume.setContact(ContactType.GITHUB_PROFILE, "github_profile_" + numberResume);
-//        resume.setContact(ContactType.STACKOVERFLOW_PROFILE, "stackoverflow_profile_" + numberResume);
-//        resume.setContact(ContactType.HOMEPAGE, "homepage_" + numberResume);
+        String numberResume = name.replace("name", "");
+
+        resume.setContact(ContactType.PHONE, "phone_" + numberResume);
+        resume.setContact(ContactType.SKYPE, "skype_" + numberResume);
+        resume.setContact(ContactType.EMAIL, "email_" + numberResume);
+        resume.setContact(ContactType.LINKEDIN_PROFILE, "linkedin_profile_" + numberResume);
+        resume.setContact(ContactType.GITHUB_PROFILE, "github_profile_" + numberResume);
+        resume.setContact(ContactType.STACKOVERFLOW_PROFILE, "stackoverflow_profile_" + numberResume);
+        resume.setContact(ContactType.HOMEPAGE, "homepage_" + numberResume);
 //
 //        resume.setSection(SectionType.OBJECTIVE, new SimpleLineSection("objective_" + numberResume));
 //        resume.setSection(SectionType.PERSONAL, new SimpleLineSection("personal_" + numberResume));
