@@ -31,14 +31,6 @@ public class Config {
         return INSTANCE;
     }
 
-    public File getStorageDir() {
-        return storageDir;
-    }
-
-    public Storage getStorage() {
-        return storage;
-    }
-
     private static File getHomeDir() {
         String prop = System.getProperty("homeDir");
         File homeDir = new File(prop == null ? "." : prop);
@@ -46,5 +38,13 @@ public class Config {
             throw new IllegalStateException(homeDir + " is not directory");
         }
         return homeDir;
+    }
+
+    public File getStorageDir() {
+        return storageDir;
+    }
+
+    public Storage getStorage() {
+        return storage;
     }
 }

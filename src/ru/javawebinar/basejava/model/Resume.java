@@ -12,12 +12,9 @@ public class Resume implements Serializable {
     private static final long serialVersionUID = 1L;
     // Unique identifier
     private final String uuid;
-
-    private final String fullName;
-
     private final Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
-
     private final Map<SectionType, AbstractSection> sections = new EnumMap<>(SectionType.class);
+    private String fullName;
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -34,6 +31,10 @@ public class Resume implements Serializable {
 
     public String getFullName() {
         return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public void setContact(ContactType type, String value) {
