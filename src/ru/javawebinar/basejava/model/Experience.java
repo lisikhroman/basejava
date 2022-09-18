@@ -14,8 +14,10 @@ import static ru.javawebinar.basejava.util.DateUtil.NOW;
 public class Experience implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    public static final Experience EMPTY = new Experience("", "", Period.EMPTY);
+
     private final Link homePage;
-    private List<Period> periods;
+    private final List<Period> periods;
 
     public Experience(String name, String url, Period... periods) {
         this(new Link(name, url), Arrays.asList(periods));
@@ -55,10 +57,15 @@ public class Experience implements Serializable {
     }
 
     public static class Period implements Serializable {
-        private final LocalDate beginPeriod;
-        private final LocalDate endPeriod;
-        private final String post;
-        private final String postDuties;
+
+        public static final Period EMPTY = new Period();
+        private LocalDate beginPeriod;
+        private LocalDate endPeriod;
+        private String post;
+        private String postDuties;
+
+        public Period() {
+        }
 
         public Period(int startYear, Month startMonth, String post, String postDuties) {
             this(DateUtil.of(startYear, startMonth), NOW, post, postDuties);

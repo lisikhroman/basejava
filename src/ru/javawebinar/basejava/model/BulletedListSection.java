@@ -1,12 +1,22 @@
 package ru.javawebinar.basejava.model;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public class BulletedListSection extends AbstractSection {
     private static final long serialVersionUID = 1L;
 
-    private final List<String> listContent;
+    public static final BulletedListSection EMPTY = new BulletedListSection("");
+
+    private List<String> listContent;
+
+    public BulletedListSection() {
+    }
+
+    public BulletedListSection(String... listContent) {
+        this(Arrays.asList(listContent));
+    }
 
     public BulletedListSection(List<String> listContent) {
         Objects.requireNonNull(listContent, "listContent must not be null");

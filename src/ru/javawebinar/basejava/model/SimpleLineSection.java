@@ -5,7 +5,15 @@ import java.util.Objects;
 public class SimpleLineSection extends AbstractSection {
     private static final long serialVersionUID = 1L;
 
-    private final String textContent;
+    public static final SimpleLineSection EMPTY = new SimpleLineSection("");
+
+    private String textContent;
+
+    public SimpleLineSection() {
+    }
+
+    public SimpleLineSection(String[] split) {
+    }
 
     public SimpleLineSection(String textContent) {
         Objects.requireNonNull(textContent, "textContent must not be null");

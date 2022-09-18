@@ -10,8 +10,20 @@ import java.util.UUID;
  */
 public class Resume implements Serializable {
     private static final long serialVersionUID = 1L;
+
+    public static final Resume EMPTY = new Resume();
+
+    static {
+        EMPTY.setSection(SectionType.OBJECTIVE, SimpleLineSection.EMPTY);
+        EMPTY.setSection(SectionType.PERSONAL, SimpleLineSection.EMPTY);
+        EMPTY.setSection(SectionType.ACHIEVEMENT, BulletedListSection.EMPTY);
+        EMPTY.setSection(SectionType.QUALIFICATIONS, BulletedListSection.EMPTY);
+        EMPTY.setSection(SectionType.EXPERIENCE, new ListExperience(Experience.EMPTY));
+        EMPTY.setSection(SectionType.EDUCATION, new ListExperience(Experience.EMPTY));
+    }
+
     // Unique identifier
-    private final String uuid;
+    private String uuid;
     private final Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
     private final Map<SectionType, AbstractSection> sections = new EnumMap<>(SectionType.class);
     private String fullName;
@@ -23,6 +35,10 @@ public class Resume implements Serializable {
     public Resume(String uuid, String fullName) {
         this.uuid = uuid;
         this.fullName = fullName;
+    }
+
+    public Resume() {
+
     }
 
     public String getUuid() {
