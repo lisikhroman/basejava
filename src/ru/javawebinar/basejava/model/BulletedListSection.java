@@ -5,10 +5,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class BulletedListSection extends AbstractSection {
-    private static final long serialVersionUID = 1L;
-
     public static final BulletedListSection EMPTY = new BulletedListSection("");
-
+    private static final long serialVersionUID = 1L;
     private List<String> listContent;
 
     public BulletedListSection() {

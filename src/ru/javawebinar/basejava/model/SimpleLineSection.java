@@ -3,10 +3,8 @@ package ru.javawebinar.basejava.model;
 import java.util.Objects;
 
 public class SimpleLineSection extends AbstractSection {
-    private static final long serialVersionUID = 1L;
-
     public static final SimpleLineSection EMPTY = new SimpleLineSection("");
-
+    private static final long serialVersionUID = 1L;
     private String textContent;
 
     public SimpleLineSection() {

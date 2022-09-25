@@ -9,9 +9,8 @@ import java.util.UUID;
  * Initial resume class
  */
 public class Resume implements Serializable {
-    private static final long serialVersionUID = 1L;
-
     public static final Resume EMPTY = new Resume();
+    private static final long serialVersionUID = 1L;
 
     static {
         EMPTY.setSection(SectionType.OBJECTIVE, SimpleLineSection.EMPTY);
@@ -22,10 +21,10 @@ public class Resume implements Serializable {
         EMPTY.setSection(SectionType.EDUCATION, new ListExperience(Experience.EMPTY));
     }
 
-    // Unique identifier
-    private String uuid;
     private final Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
     private final Map<SectionType, AbstractSection> sections = new EnumMap<>(SectionType.class);
+    // Unique identifier
+    private String uuid;
     private String fullName;
 
     public Resume(String fullName) {

@@ -12,10 +12,8 @@ import java.util.Objects;
 import static ru.javawebinar.basejava.util.DateUtil.NOW;
 
 public class Experience implements Serializable {
-    private static final long serialVersionUID = 1L;
-
     public static final Experience EMPTY = new Experience("", "", Period.EMPTY);
-
+    private static final long serialVersionUID = 1L;
     private final Link homePage;
     private final List<Period> periods;
 
